@@ -9,32 +9,37 @@ import Navbatchi from "./components/Navbatchi";
 function App() {
   const [navbatchi, setNavbatchi] = useState(null)
   const [loading, setLoading] = useState(false)
-  async function getCondidate(){
+  async function getCondidate() {
     setLoading(true)
-    await axios.get(API_URL+'users/type', {
+    await axios.get(API_URL + 'users/type', {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`
       }
     })
-      .then(res => setNavbatchi({userLogin: true}))
+      .then(res => setNavbatchi({ userLogin: true }))
       .catch(err => {
-        setNavbatchi({userLogin: false})
+        setNavbatchi({ userLogin: false })
         setNavbatchi(null)
       })
-      .finally(()=> setLoading(false))
+      .finally(() => setLoading(false))
   }
 
-  useEffect(()=> {
+  useEffect(() => {
     getCondidate()
   }, [loading])
 
 
-  if(navbatchi == null){
-    return <Login />
-  }
+  // if (navbatchi == null) {
+  //   return <>
+  //     <Login loading={loading} setLoading={setLoading} />
+  //     <ToastContainer />
+  //   </>
+  // }
 
   return (<>
-    Hello world
+    <Navbatchi />
+    <ToastContainer />
+
   </>
   );
 }

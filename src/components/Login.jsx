@@ -1,12 +1,30 @@
 import { useState } from "react"
 import { API_URL } from "../constants"
+import axios from "axios"
+import { toast } from "react-toastify";
 
-export default function Login({setLoading}) {
+
+export default function Login({loading, setLoading}) {
     const [login, setLogin] = useState('')
     const [password, setPassword] = useState("")
 
     async function loginUser(){
-        await axios.post(API_URL+'users/login',{})
+        setLoading(true)
+        await axios.post(API_URL+'users/login',{
+            login: login,
+            password: password
+        })
+            .then(res => {
+                localStorage.setItem("token", res.data.token)
+                setLogin('')
+                setPassword('')
+                toast.success("Tizimga yo'naltirilayapdi!")
+            })
+            .catch(err => {
+                console.log(err)
+                toast.error(err.response.data.message)
+            })
+            .finally(()=> setLoading(false))
     }
 
 
