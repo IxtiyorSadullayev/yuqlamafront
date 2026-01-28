@@ -1,8 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { toast, ToastContainer } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import Login from "./components/Login";
-import ScannerPage from "./components/Scanner";
 import { API_URL } from "./constants";
 import Navbatchi from "./components/Navbatchi";
 
@@ -29,17 +28,16 @@ function App() {
   }, [loading])
 
 
-  // if (navbatchi == null) {
-  //   return <>
-  //     <Login loading={loading} setLoading={setLoading} />
-  //     <ToastContainer />
-  //   </>
-  // }
+  if (navbatchi == null) {
+    return <>
+      <Login loading={loading} setLoading={setLoading} />
+      <ToastContainer />
+    </>
+  }
 
   return (<>
     <Navbatchi />
     <ToastContainer />
-
   </>
   );
 }
