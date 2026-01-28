@@ -1,13 +1,16 @@
-import axios from "axios";
+import { Routes, Route } from "react-router-dom";
+import LoginAI from "./Pages/LoginAi";
+import Dashboard from "./Pages/DashboardAi";
 import { useEffect, useState } from "react";
-import { ToastContainer } from "react-toastify";
-import Login from "./components/Login";
+import axios from "axios";
 import { API_URL } from "./constants";
-import Navbatchi from "./components/Navbatchi";
+import { ToastContainer } from "react-toastify";
 
-function App() {
+function AppAI() {
   const [navbatchi, setNavbatchi] = useState(null)
   const [loading, setLoading] = useState(false)
+
+
   async function getCondidate() {
     setLoading(true)
     await axios.get(API_URL + 'users/type', {
@@ -27,19 +30,18 @@ function App() {
     getCondidate()
   }, [loading])
 
-
-  if (navbatchi == null) {
-    return <>
-      <Login loading={loading} setLoading={setLoading} />
-      <ToastContainer />
-    </>
+  if (navbatchi) {
+    return <Routes>
+      <Route path="/" element={<Dashboard setLoading={setLoading}/>} />
+    </Routes>
   }
+  return (
+    <Routes>
+      <Route path="/" element={<LoginAI setLoading={setLoading} />} />
 
-  return (<>
-    <Navbatchi />
-    <ToastContainer />
-  </>
+    </Routes>
   );
+
 }
 
-export default App;
+export default AppAI;
