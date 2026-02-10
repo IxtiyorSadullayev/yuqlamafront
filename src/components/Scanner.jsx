@@ -8,10 +8,10 @@ import { API_URL } from "../constants";
 export default function ScannerPage() {
     const [result, setResult] = useState(null)
     const [error, setError] = useState(null)
-
-    async function getUserType(){
+    const [key, setKey] = useState(Date.now());
+    async function getUserType() {
         console.log('result', result)
-        await axios.post(API_URL+"yuqlama/user", {
+        await axios.post(API_URL + "yuqlama/user", {
             userid: result
         }, {
             headers: {
@@ -22,8 +22,8 @@ export default function ScannerPage() {
             .catch(err => toast.warning(err.response.data.message.split(":")[1]))
     }
 
-    useEffect(()=>{
-        if (result !== null){
+    useEffect(() => {
+        if (result !== null) {
             getUserType()
         }
         console.log(result)
@@ -31,8 +31,9 @@ export default function ScannerPage() {
     }, [result])
     return <>
         <Scanner
+            key={key}
             onScan={(r) => setResult(r[0].rawValue)}
             onError={e => setError(e)}
-          />
+        />
     </>
 }
