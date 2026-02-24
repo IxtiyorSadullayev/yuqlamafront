@@ -1,5 +1,5 @@
 import { Scanner } from "@yudiel/react-qr-scanner";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { API_URL } from "../constants";
@@ -22,6 +22,16 @@ export default function ScannerPage() {
             .catch(err => toast.warning(err.response.data.message.split(":")[1]))
     }
 
+
+
+    const handleError = useCallback((err) => {
+        // Faqat muhim xatolarni ko'rsatish
+        if (err?.name === 'NotAllowedError' || err?.name === 'NotFoundError') {
+            // console.error("Kritik xato:", err.message);
+            setError("Kritik xato:", err.message)
+        }
+    }, []);
+
     useEffect(() => {
         if (result !== null) {
             getUserType()
@@ -33,7 +43,7 @@ export default function ScannerPage() {
         <Scanner
             key={key}
             onScan={(r) => setResult(r[0].rawValue)}
-            onError={e => setError(e)}
+            onError={handleError}
         />
     </>
 }
